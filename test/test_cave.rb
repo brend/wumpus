@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'wumpus/cave'
+require 'wumpus/action'
 require 'flexmock/test_unit'
 
 class TestCave < Test::Unit::TestCase
@@ -21,6 +22,25 @@ class TestCave < Test::Unit::TestCase
     assert_equal(4 * 4, @c.squares.length)
   end
   
+  def test_hunter_location
+    @c.hunter_location = [1, 3]
+    assert_equal([1, 3], @c.hunter_location)
+    
+    @c.randomize
+    
+    hx, hy = nil, nil
+    0.upto(3) do |x|
+      0.upto(3) do |y|
+        if @c[x, y].start
+          hx, hy = x, y
+          break
+        end
+      end
+    end
+    
+    assert_equal([hx, hy], @c.hunter_location)
+  end
+  
   def test_some_action_on_the_board
     @c.randomize
     assert(@c.squares.any? {|s| s.gold})
@@ -32,9 +52,10 @@ class TestCave < Test::Unit::TestCase
   # TODO: Find out why this never fails, even if :turn is never sent
   def test_hunt
     h = flexmock()
-    h.should_receive(:turn).at_least.once
+    h.should_receive(:turn).at_least.once.and_return(Action::TURN)
     
     @c.hunter = h
+    @c.randomize
     @c.hunt
   end
   

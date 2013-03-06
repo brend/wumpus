@@ -1,6 +1,8 @@
 
+class ProtocolBreach < Exception; end
+
 class Cave
-  attr_accessor :hunter
+  attr_accessor :hunter, :hunter_location
   attr_reader :squares
   
   def initialize(h)
@@ -38,12 +40,19 @@ class Cave
   end
   
   def hunt
-    0
+    
+    senses = get_senses(hunter_location.first, hunter_location.last)
+    action = hunter.turn(senses)
+    
+    raise ProtocolBreach.new unless Action.valid?(action)
+    
+    
   end
   
   def randomize
+    sx, sy = rand(4), rand(4)
     # Place 'start'
-    self[rand(4), rand(4)].start = true
+    self[sx, sy].start = true
     # Place 'gold
     while true
       x, y = rand(4), rand(4)
@@ -76,5 +85,8 @@ class Cave
         break
       end
     end
+    
+    # Prepare for the hunt
+    self.hunter_location = [sx, sy]
   end
 end
