@@ -1,15 +1,11 @@
 
 class Cave
-  attr_reader :hunter
+  attr_accessor :hunter
+  attr_reader :squares
   
   def initialize(h)
     @hunter = h
     @squares = Array.new(4 * 4) {Square.new}
-    
-  end
-  
-  def hunt
-    0
   end
   
   def [](x, y)
@@ -39,5 +35,46 @@ class Cave
     self[x, y].apply_center(s)
     
     s
+  end
+  
+  def hunt
+    0
+  end
+  
+  def randomize
+    # Place 'start'
+    self[rand(4), rand(4)].start = true
+    # Place 'gold
+    while true
+      x, y = rand(4), rand(4)
+      unless self[x, y].occupied
+        self[x, y].gold = true
+        break
+      end
+    end
+    # Place 'wumpus'
+    while true
+      x, y = rand(4), rand(4)
+      unless self[x, y].occupied
+        self[x, y].wumpus = true 
+        break
+      end
+    end
+    # Place 'pit'
+    while true
+      x, y = rand(4), rand(4)
+      unless self[x, y].occupied
+        self[x, y].pit = true 
+        break
+      end
+    end
+    # Place another 'pit'
+    while true
+      x, y = rand(4), rand(4)
+      unless self[x, y].occupied
+        self[x, y].pit = true 
+        break
+      end
+    end
   end
 end

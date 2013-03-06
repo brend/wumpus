@@ -71,5 +71,27 @@ class TestSquare < Test::Unit::TestCase
     assert(!@r.stench)
     assert(!@r.breeze)
     assert(@r.glitter)
-    end
+  end
+  
+  def test_occupied
+    assert(!@s.occupied)
+    
+    @s.wumpus = true
+    assert(@s.occupied)
+    
+    @s.wumpus = false
+    @s.gold = true
+    assert(@s.occupied)
+    
+    @s.gold = false
+    @s.pit = true
+    assert(@s.occupied)
+    
+    @s.pit = false
+    @s.start = true
+    assert(@s.occupied)
+    
+    @s.start = false
+    assert(!@s.occupied)
+  end
 end

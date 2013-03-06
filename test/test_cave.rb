@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'wumpus/cave'
+require 'flexmock/test_unit'
 
 class TestCave < Test::Unit::TestCase
   def setup
@@ -16,10 +17,25 @@ class TestCave < Test::Unit::TestCase
     assert_equal(@h, @c.hunter)
   end
   
-  def test_play
-    score = @c.hunt
+  def test_squares
+    assert_equal(4 * 4, @c.squares.length)
+  end
+  
+  def test_some_action_on_the_board
+    @c.randomize
+    assert(@c.squares.any? {|s| s.gold})
+    assert(@c.squares.any? {|s| s.pit})
+    assert(@c.squares.any? {|s| s.wumpus})
+    assert(@c.squares.any? {|s| s.start})
+  end
+  
+  # TODO: Find out why this never fails, even if :turn is never sent
+  def test_hunt
+    h = flexmock()
+    h.should_receive(:turn).at_least.once
     
-    assert_not_nil(score)
+    @c.hunter = h
+    @c.hunt
   end
   
   def test_square_access
@@ -83,4 +99,5 @@ class TestCave < Test::Unit::TestCase
     
     assert_nil(@c.get_senses(4, 0))
   end
+  
 end

@@ -10,4 +10,8 @@ class Square
   def apply_center(senses)
     senses.glitter = self.gold
   end
+  
+  def occupied
+    gold || wumpus || pit || start
+  end
 end
