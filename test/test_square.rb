@@ -1,5 +1,6 @@
 require 'test/unit'
 require 'wumpus/square'
+require 'mocks'
 
 class TestSquare < Test::Unit::TestCase
   def setup
@@ -70,9 +71,5 @@ class TestSquare < Test::Unit::TestCase
     assert(!@r.stench)
     assert(!@r.breeze)
     assert(@r.glitter)
-  end
-  
-  class MockSenses
-    attr_accessor :breeze, :stench, :bump, :glitter, :scream
-  end
+    end
 end

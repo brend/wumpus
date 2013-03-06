@@ -52,4 +52,35 @@ class TestCave < Test::Unit::TestCase
     
     assert(s != t)
   end
+  
+  def test_get_senses
+    @c[1, 2].wumpus = true
+    @c[2, 0].gold = true
+    @c[2, 2].pit = true
+    @c[3, 3].pit = true
+    
+    r = @c.get_senses(0, 0)
+    assert(!r.stench)
+    assert(!r.breeze)
+    assert(!r.glitter)
+    assert(!r.scream)
+    assert(!r.bump)
+    
+    r = @c.get_senses(1, 1)
+    assert(r.stench)
+    assert(!r.breeze)
+    assert(!r.glitter)
+    
+    r = @c.get_senses(2, 1)
+    assert(!r.stench)
+    assert(r.breeze)
+    assert(!r.glitter)
+    
+    r = @c.get_senses(2, 0)
+    assert(!r.stench)
+    assert(!r.breeze)
+    assert(r.glitter)
+    
+    assert_nil(@c.get_senses(4, 0))
+  end
 end
