@@ -1,8 +1,9 @@
+require 'wumpus/Direction'
 
 class ProtocolBreach < Exception; end
 
 class Cave
-  attr_accessor :hunter, :hunter_location
+  attr_accessor :hunter, :hunter_location, :hunter_direction
   attr_reader :squares
   
   def initialize(h)
@@ -88,5 +89,6 @@ class Cave
     
     # Prepare for the hunt
     self.hunter_location = [sx, sy]
+    self.hunter_direction = Direction::UP
   end
 end

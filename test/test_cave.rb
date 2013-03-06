@@ -1,6 +1,7 @@
 require 'test/unit'
 require 'wumpus/cave'
 require 'wumpus/action'
+require 'wumpus/direction'
 require 'flexmock/test_unit'
 
 class TestCave < Test::Unit::TestCase
@@ -39,6 +40,14 @@ class TestCave < Test::Unit::TestCase
     end
     
     assert_equal([hx, hy], @c.hunter_location)
+  end
+  
+  def test_hunter_direction
+    @c.hunter_direction = Direction::DOWN
+    assert_equal(Direction::DOWN, @c.hunter_direction)
+    
+    @c.randomize
+    assert_equal(Direction::UP, @c.hunter_direction)
   end
   
   def test_some_action_on_the_board
