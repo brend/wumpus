@@ -41,13 +41,12 @@ class Cave
   end
   
   def hunt
-    
     senses = get_senses(hunter_location.first, hunter_location.last)
     action = hunter.turn(senses)
     
     raise ProtocolBreach.new unless Action.valid?(action)
     
-    
+    action.apply(self)
   end
   
   def randomize

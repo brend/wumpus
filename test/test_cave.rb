@@ -130,4 +130,25 @@ class TestCave < Test::Unit::TestCase
     assert_nil(@c.get_senses(4, 0))
   end
   
+  def test_turn
+    @c.hunter_direction = Direction::UP
+    @c.turn
+    assert_equal(Direction::RIGHT, @c.hunter_direction)
+  end
+  
+  def test_forward
+    @c.forward
+  end
+  
+  def test_shoot
+    @c.shoot
+  end
+  
+  def test_grab
+    @c.grab
+  end
+  
+  def test_climb
+    @c.climb
+  end
 end

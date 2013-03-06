@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'flexmock/test_unit'
 require 'wumpus/action'
 
 class TestAction < Test::Unit::TestCase
@@ -10,5 +11,17 @@ class TestAction < Test::Unit::TestCase
     assert(Action.valid?(Action::CLIMB))
     assert(!Action.valid?(17))
     assert(!Action.valid?(nil))
-  end  
+  end
+  
+  def test_initialize
+    a = Action.new(:shoot)
+    
+    assert_equal(:shoot, a.message)
+  end
+  
+  def test_apply
+    t = flexmock()
+    t.should_receive(:shoot).once
+    Action::SHOOT.apply(t)
+  end
 end
