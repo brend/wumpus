@@ -15,6 +15,13 @@ class TestCave < Test::Unit::TestCase
     @c = nil
   end
   
+  def test_randomize
+    @c.randomize
+    assert_not_nil(@c.hunter_location)
+    assert_not_nil(@c.hunter_direction)
+    assert(@c.hunter_arrow)
+  end
+  
   def test_hunter
     assert_equal(@h, @c.hunter)
   end
@@ -42,12 +49,20 @@ class TestCave < Test::Unit::TestCase
     assert_equal([hx, hy], @c.hunter_location)
   end
   
+  def test_hunter_location_bounds
+    # An invalid location mustn't be stored
+    @c.hunter_location = [4, 2]
+    assert_not_equal([4, 2], @c.hunter_location)
+  end
+  
   def test_hunter_direction
     @c.hunter_direction = Direction::DOWN
     assert_equal(Direction::DOWN, @c.hunter_direction)
     
     @c.randomize
     assert_equal(Direction::UP, @c.hunter_direction)
+    
+    assert_raise(ArgumentError) { @c.hunter_direction = nil }
   end
   
   def test_some_action_on_the_board
@@ -136,19 +151,81 @@ class TestCave < Test::Unit::TestCase
     assert_equal(Direction::RIGHT, @c.hunter_direction)
   end
   
+  def test_just_bumped
+    @c.just_bumped
+  end
+  
   def test_forward
+    @c.randomize
+    assert_not_nil(@c.hunter_direction)
     @c.forward
+  end
+  
+  def test_forward_bump
+    @c.randomize
+    @c.hunter_location = [0, 1]
+    @c.hunter_direction = Direction::LEFT
+    @c.forward
+    assert(@c.just_bumped)
   end
   
   def test_shoot
     @c.shoot
   end
   
+  def test_hunter_arrow
+    @c.hunter_arrow = true
+    assert(@c.hunter_arrow)
+    @c.hunter_arrow = false
+    assert(!@c.hunter_arrow)
+  end
+  
+  def test_shoot_removes_arrow
+    @c.randomize
+    @c.hunter_arrow = true
+    @c.shoot
+    assert(!@c.hunter_arrow)
+  end
+  
+  def test_shoot_on_wumpus
+    @c[0, 3].wumpus = true
+    @c.hunter_location = [0, 0]
+    @c.hunter_direction = Direction::UP
+    @c.hunter_arrow = true
+    
+    @c.shoot
+    assert(!@c[0, 3].wumpus)
+  end
+  
+  def test_shoot_miss_wumpus
+    @c[0, 3].wumpus = true
+    @c.hunter_location = [1, 0]
+    @c.hunter_direction = Direction::UP
+    @c.hunter_arrow = true
+    
+    @c.shoot
+    assert(@c[0, 3].wumpus)
+  end
+  
   def test_grab
+    @c[0, 0].gold = false
+    @c.hunter_location = [0, 0]
     @c.grab
+    assert(!@c[0, 0].gold)
+    
+    @c[0, 0].gold = true
+    @c.grab
+    assert(!@c[0, 0].gold)
   end
   
   def test_climb
+    @c.start_location = [2, 3]
+    @c.hunter_location = [1, 2]
     @c.climb
+    assert(!@c.completed)
+    
+    @c.hunter_location = [2, 3]
+    @c.climb
+    assert(@c.completed)
   end
 end

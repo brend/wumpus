@@ -3,8 +3,8 @@ require 'wumpus/Direction'
 class ProtocolBreach < Exception; end
 
 class Cave
-  attr_accessor :hunter, :hunter_location, :hunter_direction, :start_location
-  attr_reader :squares, :completed
+  attr_accessor :hunter, :start_location, :hunter_arrow
+  attr_reader :squares, :completed, :gold_grabbed, :just_bumped
   
   def initialize(h)
     @hunter = h
@@ -12,19 +12,47 @@ class Cave
   end
   
   def [](x, y)
-    return nil if x < 0 || x > 3 || y < 0 || y > 3
+    return nil unless valid_location?([x, y])
     
     @squares[x + 4 * y]
   end
   
   def []=(x, y, v)
-    raise IndexError if x < 0 || x > 3 || y < 0 || y > 3
+    raise IndexError unless valid_location?([x, y])
     
     @squares[x + 4 * y] = v
   end
   
+  def hunter_location
+    @hunter_location
+  end
+  
+  def hunter_location=(location)
+    if valid_location?(location)
+      @hunter_location = location
+      @just_bumped = false
+    else
+      @just_bumped = true
+    end
+  end
+  
+  def hunter_direction
+    @hunter_direction
+  end
+  
+  def hunter_direction=(d)
+    raise ArgumentError if d.nil?
+    @hunter_direction = d
+  end
+  
+  def valid_location?(location)
+    x, y = location
+    
+    x >= 0 && x < 4 && y >= 0 && y < 4
+  end
+  
   def get_senses(x, y)
-    return nil if x < 0 || x > 3 || y < 0 || y > 3
+    return nil unless valid_location?([x, y])
     
     s = Senses.new
     
@@ -41,13 +69,19 @@ class Cave
   end
   
   def hunt
+    death_counter = 0
+    
     while not completed
-      senses = get_senses(hunter_location.first, hunter_location.last)
-      action = hunter.turn(senses)
+      senses = get_senses(self.hunter_location.first, self.hunter_location.last)
+      action = self.hunter.turn(senses)
       
       raise ProtocolBreach.new unless Action.valid?(action)
       
       action.apply(self)
+      
+      # DEBUG
+      death_counter += 1
+      break if death_counter > 10
     end
   end
   
@@ -91,9 +125,44 @@ class Cave
     # Prepare for the hunt
     self.hunter_location = self.start_location = [sx, sy]
     self.hunter_direction = Direction::UP
+    self.hunter_arrow = true
   end
   
   def climb
-    @completed = hunter_location == start_location
+    @completed = self.hunter_location == self.start_location
+  end
+  
+  def forward
+    self.hunter_direction.apply(self)
+  end
+  
+  def grab
+    x, y = self.hunter_location
+    if self[x, y].gold
+      @gold_grabbed = true
+      self[x, y].gold = false
+    end
+  end
+  
+  def turn
+    self.hunter_direction = self.hunter_direction.turn
+  end
+  
+  def shoot
+    return unless self.hunter_arrow
+    
+    arrow_location = self.hunter_location
+    
+    begin
+      arrow_location = self.hunter_direction.add_to(arrow_location)
+      
+      break if arrow_location.nil?
+      
+      if self[arrow_location.first, arrow_location.last].wumpus
+        self[arrow_location.first, arrow_location.last].wumpus = false
+      end
+    end while true
+    
+    self.hunter_arrow = false
   end
 end
