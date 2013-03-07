@@ -94,4 +94,18 @@ class TestSquare < Test::Unit::TestCase
     @s.start = false
     assert(!@s.occupied)
   end
+  
+  def test_dangerous?
+    assert(!@s.dangerous?)
+    @s.wumpus = true
+    assert(@s.dangerous?)
+    @s.wumpus = false
+    assert(!@s.dangerous?)
+    @s.pit = true
+    assert(@s.dangerous?)
+    @s.pit = false
+    @s.start = true
+    @s.gold = true
+    assert(!@s.dangerous?)
+  end
 end

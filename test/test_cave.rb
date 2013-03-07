@@ -1,4 +1,5 @@
 require 'test/unit'
+require 'set'
 require 'wumpus/cave'
 require 'wumpus/action'
 require 'wumpus/direction'
@@ -227,5 +228,39 @@ class TestCave < Test::Unit::TestCase
     @c.hunter_location = [2, 3]
     @c.climb
     assert(@c.completed)
+  end
+  
+  def test_dangerous_positions
+    @c[0, 2].pit = true
+    @c[2, 1].wumpus = true
+    @c[1, 1].gold = true
+    @c[3, 3].pit = true
+    
+    assert_equal(Set.new([[0, 2], [2, 1], [3, 3]]), Set.new(@c.dangerous_positions))
+  end
+  
+  def test_hunter_dead?
+    @c[0, 2].pit = true
+    @c[2, 1].wumpus = true
+    @c[1, 1].gold = true
+    @c[3, 3].pit = true
+    @c.hunter_location = [2, 1]
+    assert(@c.hunter_dead?)
+    @c.hunter_location = [1, 1]
+    assert(!@c.hunter_dead?)
+    @c.hunter_location = [2, 1]
+    assert(@c.hunter_dead?)
+  end
+  
+  def test_action_count
+    @c.randomize
+    assert_equal(0, @c.action_count)
+    @c.turn
+    @c.turn
+    @c.forward
+    @c.shoot
+    @c.climb
+    @c.grab
+    assert_equal(6, @c.action_count)
   end
 end

@@ -14,4 +14,8 @@ class Square
   def occupied
     gold || wumpus || pit || start
   end
+  
+  def dangerous?
+    wumpus || pit
+  end
 end

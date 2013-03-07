@@ -3,12 +3,13 @@ require 'wumpus/Direction'
 class ProtocolBreach < Exception; end
 
 class Cave
-  attr_accessor :hunter, :start_location, :hunter_arrow
+  attr_accessor :hunter, :start_location, :hunter_arrow, :action_count
   attr_reader :squares, :completed, :gold_grabbed, :just_bumped
   
   def initialize(h)
     @hunter = h
     @squares = Array.new(4 * 4) {Square.new}
+    @action_count = 0
   end
   
   def [](x, y)
@@ -129,14 +130,20 @@ class Cave
   end
   
   def climb
+    @action_count += 1
+
     @completed = self.hunter_location == self.start_location
   end
   
   def forward
+    @action_count += 1
+
     self.hunter_direction.apply(self)
   end
   
   def grab
+    @action_count += 1
+
     x, y = self.hunter_location
     if self[x, y].gold
       @gold_grabbed = true
@@ -145,10 +152,14 @@ class Cave
   end
   
   def turn
+    @action_count += 1
+
     self.hunter_direction = self.hunter_direction.turn
   end
   
   def shoot
+    @action_count += 1
+
     return unless self.hunter_arrow
     
     arrow_location = self.hunter_location
@@ -164,5 +175,19 @@ class Cave
     end while true
     
     self.hunter_arrow = false
+  end
+  
+  def dangerous_positions
+    dp = []
+    0.upto(3) do |x|
+      0.upto(3) do |y|
+        dp << [x, y] if self[x, y].dangerous?
+      end
+    end
+    dp
+  end
+  
+  def hunter_dead?
+    self.dangerous_positions.include?(self.hunter_location)
   end
 end
