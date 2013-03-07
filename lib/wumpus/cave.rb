@@ -3,8 +3,8 @@ require 'wumpus/Direction'
 class ProtocolBreach < Exception; end
 
 class Cave
-  attr_accessor :hunter, :hunter_location, :hunter_direction
-  attr_reader :squares
+  attr_accessor :hunter, :hunter_location, :hunter_direction, :start_location
+  attr_reader :squares, :completed
   
   def initialize(h)
     @hunter = h
@@ -41,12 +41,14 @@ class Cave
   end
   
   def hunt
-    senses = get_senses(hunter_location.first, hunter_location.last)
-    action = hunter.turn(senses)
-    
-    raise ProtocolBreach.new unless Action.valid?(action)
-    
-    action.apply(self)
+    while not completed
+      senses = get_senses(hunter_location.first, hunter_location.last)
+      action = hunter.turn(senses)
+      
+      raise ProtocolBreach.new unless Action.valid?(action)
+      
+      action.apply(self)
+    end
   end
   
   def randomize
@@ -87,7 +89,11 @@ class Cave
     end
     
     # Prepare for the hunt
-    self.hunter_location = [sx, sy]
+    self.hunter_location = self.start_location = [sx, sy]
     self.hunter_direction = Direction::UP
+  end
+  
+  def climb
+    @completed = hunter_location == start_location
   end
 end
