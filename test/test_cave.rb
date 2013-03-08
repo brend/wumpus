@@ -153,9 +153,20 @@ class TestCave < Test::Unit::TestCase
     assert(!s1.bump)
     assert(!s1.scream)
     @c.forward
-    assert(!s1.bump)
+    s2 = @c.get_senses(*@c.hunter_location)
+    assert(!s2.bump)
     @c.forward
-    assert(s1.bump)
+    s3 = @c.get_senses(*@c.hunter_location)
+    assert(s3.bump)
+    
+    @c[3, 0].wumpus = true
+    @c.hunter_direction = Direction::RIGHT
+    @c.hunter_arrow = true
+    s4 = @c.get_senses(*@c.hunter_location)
+    assert(!s4.scream)
+    @c.shoot
+    s5 = @c.get_senses(*@c.hunter_location)
+    assert(s5.scream)
   end
   
   def test_turn
@@ -167,15 +178,19 @@ class TestCave < Test::Unit::TestCase
   def test_just_bumped
     @c.just_bumped = true
     assert(@c.just_bumped)
+    assert(@c.get_senses(0, 0).bump)
     @c.just_bumped = false
     assert(!@c.just_bumped)
+    assert(!@c.get_senses(0, 0).bump)
   end
   
   def test_just_killed_wumpus
     @c.just_killed_wumpus = true
     assert(@c.just_killed_wumpus)
+    assert(@c.get_senses(0, 0).scream)
     @c.just_killed_wumpus = false
     assert(!@c.just_killed_wumpus)
+    assert(!@c.get_senses(0, 0).scream)
   end
   
   def test_forward

@@ -57,15 +57,18 @@ class Cave
     
     s = Senses.new
     
+    # Apply locational data
     [-1, 1].each do |o|
       hn = self[x + o, y]
       hn.apply_neighbor(s) if hn
       vn = self[x, y + o]
       vn.apply_neighbor(s) if vn
     end
-    
     self[x, y].apply_center(s)
     
+    # Apply event data
+    s.bump = self.just_bumped
+    s.scream = self.just_killed_wumpus
     s
   end
   
@@ -171,6 +174,7 @@ class Cave
       
       if self[arrow_location.first, arrow_location.last].wumpus
         self[arrow_location.first, arrow_location.last].wumpus = false
+        self.just_killed_wumpus = true
       end
     end while true
     
