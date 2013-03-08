@@ -18,4 +18,12 @@ class Square
   def dangerous?
     wumpus || pit
   end
+  
+  def to_s
+    s = start ? "S" : ""
+    w = wumpus ? "W" : ""
+    p = pit ? "P" : ""
+    g = gold ? "G" : ""
+    "[#{[s, w, p, g].join}]"
+  end
 end
