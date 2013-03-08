@@ -4,7 +4,7 @@ class ProtocolBreach < Exception; end
 
 class Cave
   attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus
-  attr_reader :squares, :completed, :gold_grabbed
+  attr_reader :squares, :completed, :gold_grabbe
   
   def initialize(h)
     @hunter = h
@@ -140,6 +140,7 @@ class Cave
     self.hunter_location = self.start_location = [sx, sy]
     self.hunter_direction = Direction::UP
     self.hunter_arrow = true
+    self.action_count = 0
   end
   
   def climb

@@ -321,5 +321,12 @@ class TestCave < Test::Unit::TestCase
     @c.climb
     @c.grab
     assert_equal(6, @c.action_count)
+    
+    @c.randomize
+    @c.hunter = flexmock()
+    @c.hunter.should_receive(:turn => Action::GRAB)
+    assert_equal(0, @c.action_count)
+    @c.hunt_step
+    assert_equal(1, @c.action_count)
   end
 end
