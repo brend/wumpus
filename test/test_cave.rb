@@ -115,7 +115,7 @@ class TestCave < Test::Unit::TestCase
     assert(s != t)
   end
   
-  def test_get_senses
+  def test_get_senses_locational
     @c[1, 2].wumpus = true
     @c[2, 0].gold = true
     @c[2, 2].pit = true
@@ -146,6 +146,18 @@ class TestCave < Test::Unit::TestCase
     assert_nil(@c.get_senses(4, 0))
   end
   
+  def test_get_senses_events
+    @c.hunter_location = [1, 0]
+    @c.hunter_direction = Direction::LEFT
+    s1 = @c.get_senses(*@c.hunter_location)
+    assert(!s1.bump)
+    assert(!s1.scream)
+    @c.forward
+    assert(!s1.bump)
+    @c.forward
+    assert(s1.bump)
+  end
+  
   def test_turn
     @c.hunter_direction = Direction::UP
     @c.turn
@@ -153,7 +165,17 @@ class TestCave < Test::Unit::TestCase
   end
   
   def test_just_bumped
-    @c.just_bumped
+    @c.just_bumped = true
+    assert(@c.just_bumped)
+    @c.just_bumped = false
+    assert(!@c.just_bumped)
+  end
+  
+  def test_just_killed_wumpus
+    @c.just_killed_wumpus = true
+    assert(@c.just_killed_wumpus)
+    @c.just_killed_wumpus = false
+    assert(!@c.just_killed_wumpus)
   end
   
   def test_forward

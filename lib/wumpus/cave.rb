@@ -3,8 +3,8 @@ require 'wumpus/Direction'
 class ProtocolBreach < Exception; end
 
 class Cave
-  attr_accessor :hunter, :start_location, :hunter_arrow, :action_count
-  attr_reader :squares, :completed, :gold_grabbed, :just_bumped
+  attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus
+  attr_reader :squares, :completed, :gold_grabbed
   
   def initialize(h)
     @hunter = h
