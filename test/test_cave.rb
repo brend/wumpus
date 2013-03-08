@@ -185,6 +185,9 @@ class TestCave < Test::Unit::TestCase
   end
   
   def test_just_bumped_reset
+    @c.hunter = flexmock()
+    @c.hunter.should_receive(:turn => Action::GRAB)
+    
     @c.randomize
     @c.just_bumped = true
     assert(@c.get_senses(0, 0).bump)
@@ -202,6 +205,9 @@ class TestCave < Test::Unit::TestCase
   end
 
   def test_just_killed_wumpus
+    @c.hunter = flexmock()
+    @c.hunter.should_receive(:turn => Action::GRAB)
+    
     @c.randomize
     @c.just_killed_wumpus = true
     assert(@c.get_senses(0, 0).scream)
