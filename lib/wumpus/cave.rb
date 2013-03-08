@@ -1,5 +1,7 @@
 require 'wumpus/direction'
 require 'wumpus/square'
+require 'wumpus/senses'
+require 'wumpus/action'
 
 module WumpusHunt
   class ProtocolBreach < Exception; end
@@ -83,7 +85,10 @@ module WumpusHunt
             
         # DEBUG
         death_counter += 1
-        break if death_counter > 10
+        if death_counter > 10
+          puts "Hunter has taken to many actions; quitting..."
+          break
+        end
       end
     end
   
@@ -92,7 +97,7 @@ module WumpusHunt
       reset_events
       action = self.hunter.make_move(senses)
       
-      raise ProtocolBreach.new unless Action.valid?(action)
+      raise ProtocolBreach.new("Hunter returns invalid action: #{action.nil? ? '<nil>' : action}") unless Action.valid?(action)
       
       action.apply(self)    
     end
