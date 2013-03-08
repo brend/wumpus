@@ -75,6 +75,7 @@ class TestCave < Test::Unit::TestCase
   end
   
   # TODO: Find out why this never fails, even if :make_move is never sent
+  # Maybe I should use "h = flexmock.should_... .mock"?
   def test_hunt
     h = flexmock()
     h.should_receive(:make_move).at_least.once.and_return(Action::TURN)
@@ -328,5 +329,39 @@ class TestCave < Test::Unit::TestCase
     assert_equal(0, @c.action_count)
     @c.hunt_step
     assert_equal(1, @c.action_count)
+  end
+  
+  def test_score
+    @c[3, 3].gold = true
+    @c.hunter_arrow = true
+    @c.hunter_location = [0, 0]
+    @c.hunter_direction = Direction::UP
+    
+    assert_equal(0, @c.score)
+    @c.turn
+    assert_equal(-1, @c.score)
+    @c.forward
+    assert_equal(-2, @c.score)
+    @c.shoot
+    assert_equal(-13, @c.score)
+    @c[3, 3].gold = false
+    @c[*@c.hunter_location].gold = true
+    @c.grab
+    assert_equal(-14 + 1000, @c.score)
+    @c[*@c.hunter_location].pit = true
+    assert_equal(-14 + 1000 - 1000, @c.score)
+  end
+  
+  def test_gold_grabbed?
+    @c.randomize
+    assert(!@c.gold_grabbed?)
+    
+    0.upto(3) do |x|
+      0.upto(3) do |y|
+        @c[x, y].gold = false
+      end
+    end
+    
+    assert(@c.gold_grabbed?)
   end
 end

@@ -4,12 +4,13 @@ class ProtocolBreach < Exception; end
 
 class Cave
   attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus
-  attr_reader :squares, :completed, :gold_grabbe
+  attr_reader :squares, :completed
   
   def initialize(h)
     @hunter = h
     @squares = Array.new(4 * 4) {Square.new}
     @action_count = 0
+    @score = 0
   end
   
   def [](x, y)
@@ -157,12 +158,7 @@ class Cave
   
   def grab
     @action_count += 1
-
-    x, y = self.hunter_location
-    if self[x, y].gold
-      @gold_grabbed = true
-      self[x, y].gold = false
-    end
+    self[*self.hunter_location].gold = false
   end
   
   def turn
@@ -204,5 +200,23 @@ class Cave
   
   def hunter_dead?
     self.dangerous_positions.include?(self.hunter_location)
+  end
+  
+  def score
+    score = 0
+    # Score of -1 for every action taken
+    score += -self.action_count
+    # Score of -10 for firing the arrow
+    score += -10 unless self.hunter_arrow
+    # Score of +1000 for taking the gold
+    score += 1000 if self.gold_grabbed?
+    # Score of -1000 for dying
+    score += -1000 if self.hunter_dead?
+    
+    score
+  end
+  
+  def gold_grabbed?
+    not self.squares.any? {|s| s.gold}
   end
 end
