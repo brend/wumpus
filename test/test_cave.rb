@@ -366,4 +366,10 @@ class TestCave < Test::Unit::TestCase
     
     assert(@c.gold_grabbed?)
   end
+  
+  def test_hunt_handles_hunter_shenanigans
+    @c.randomize
+    @c.hunter = flexmock.should_receive(:make_move => nil)
+    assert_raise(WumpusHunt::ProtocolBreach) { @c.hunt_step }
+  end
 end
