@@ -87,7 +87,7 @@ class Cave
   def hunt_step
     senses = get_senses(self.hunter_location.first, self.hunter_location.last)
     reset_events
-    action = self.hunter.turn(senses)
+    action = self.hunter.make_move(senses)
       
     raise ProtocolBreach.new unless Action.valid?(action)
       

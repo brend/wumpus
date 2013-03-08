@@ -74,10 +74,10 @@ class TestCave < Test::Unit::TestCase
     assert(@c.squares.any? {|s| s.start})
   end
   
-  # TODO: Find out why this never fails, even if :turn is never sent
+  # TODO: Find out why this never fails, even if :make_move is never sent
   def test_hunt
     h = flexmock()
-    h.should_receive(:turn).at_least.once.and_return(Action::TURN)
+    h.should_receive(:make_move).at_least.once.and_return(Action::TURN)
     
     @c.hunter = h
     @c.randomize
@@ -186,7 +186,7 @@ class TestCave < Test::Unit::TestCase
   
   def test_just_bumped_reset
     @c.hunter = flexmock()
-    @c.hunter.should_receive(:turn => Action::GRAB)
+    @c.hunter.should_receive(:make_move => Action::GRAB)
     
     @c.randomize
     @c.just_bumped = true
@@ -206,7 +206,7 @@ class TestCave < Test::Unit::TestCase
 
   def test_just_killed_wumpus
     @c.hunter = flexmock()
-    @c.hunter.should_receive(:turn => Action::GRAB)
+    @c.hunter.should_receive(:make_move => Action::GRAB)
     
     @c.randomize
     @c.just_killed_wumpus = true
@@ -324,7 +324,7 @@ class TestCave < Test::Unit::TestCase
     
     @c.randomize
     @c.hunter = flexmock()
-    @c.hunter.should_receive(:turn => Action::GRAB)
+    @c.hunter.should_receive(:make_move => Action::GRAB)
     assert_equal(0, @c.action_count)
     @c.hunt_step
     assert_equal(1, @c.action_count)

@@ -24,7 +24,7 @@ Possible future extensions include
     pretty penny for those...)
 
 The interface of the hunter consists of a single function:
-  turn: Senses -> Action
+  make_move: Senses -> Action
 This can be read like this: In each turn of the hunt, the hunter assesses her
 sensory input and then decides which action to take.
 Senses are: Breeze, Stench, Glitter, Bump, Scream
@@ -98,7 +98,7 @@ The Nitty-Gritty
 
 For starters, the student will povide their implementation of the hunter in
 a file called `hunter.rb`. Therein must be found a class by the name of
-`Hunter`, which verily shalt possess a method calléd `Hunter#turn(senses)`!
+`Hunter`, which verily shalt possess a method calléd `Hunter#make_move(senses)`!
 The object passed as an argument into the parameter `senses` will have 
 accessors `breeze`, `stench`, `glitter`, `bump`, `scream`, indicating wether
 or not the respecitive sensory input is present.
@@ -106,6 +106,6 @@ The value returned by the method shall be the description of the hunter's
 desired action, one of `Action::TURN`, `Action::FORWARD`, `Action::SHOOT`,
 `Action::GRAB` and `Action::CLIMB`.
 
-The game will continue to call the method `Hunter#turn` until the hunt is over
+The game will continue to call the method `Hunter#make_move` until the hunt is over
 (good or bad), or until ten turns have passed without the hunter moving from
 her current square *(this is preliminary, will probably be refined later)*.
