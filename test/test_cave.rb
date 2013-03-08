@@ -184,6 +184,14 @@ class TestCave < Test::Unit::TestCase
     assert(!@c.get_senses(0, 0).bump)
   end
   
+  def test_just_bumped_reset
+    @c.randomize
+    @c.just_bumped = true
+    assert(@c.get_senses(0, 0).bump)
+    @c.hunt_step
+    assert(!@c.get_senses(0, 0).bump)
+  end
+  
   def test_just_killed_wumpus
     @c.just_killed_wumpus = true
     assert(@c.just_killed_wumpus)
@@ -192,7 +200,15 @@ class TestCave < Test::Unit::TestCase
     assert(!@c.just_killed_wumpus)
     assert(!@c.get_senses(0, 0).scream)
   end
-  
+
+  def test_just_killed_wumpus
+    @c.randomize
+    @c.just_killed_wumpus = true
+    assert(@c.get_senses(0, 0).scream)
+    @c.hunt_step
+    assert(!@c.get_senses(0, 0).scream)
+  end
+    
   def test_forward
     @c.randomize
     assert_not_nil(@c.hunter_direction)

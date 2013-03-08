@@ -76,17 +76,27 @@ class Cave
     death_counter = 0
     
     while not completed
-      senses = get_senses(self.hunter_location.first, self.hunter_location.last)
-      action = self.hunter.turn(senses)
-      
-      raise ProtocolBreach.new unless Action.valid?(action)
-      
-      action.apply(self)
-      
+      hunt_step
+            
       # DEBUG
       death_counter += 1
       break if death_counter > 10
     end
+  end
+  
+  def hunt_step
+    senses = get_senses(self.hunter_location.first, self.hunter_location.last)
+    reset_events
+    action = self.hunter.turn(senses)
+      
+    raise ProtocolBreach.new unless Action.valid?(action)
+      
+    action.apply(self)    
+  end
+  
+  def reset_events
+    self.just_killed_wumpus = false
+    self.just_bumped = false
   end
   
   def randomize
