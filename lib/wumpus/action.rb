@@ -13,6 +13,10 @@ module WumpusHunt
     def apply(target)
       target.send(message)
     end
+    
+    def to_s
+      message.to_s
+    end
   
     TURN    = Action.new(:turn)
     FORWARD = Action.new(:forward)
