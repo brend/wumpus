@@ -3,6 +3,8 @@ require 'flexmock/test_unit'
 require 'wumpus/action'
 
 class TestAction < Test::Unit::TestCase
+  include WumpusHunt
+  
   def test_valid
     assert(Action.valid?(Action::TURN))
     assert(Action.valid?(Action::SHOOT))

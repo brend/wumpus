@@ -3,6 +3,8 @@ require 'wumpus/square'
 require 'mocks'
 
 class TestSquare < Test::Unit::TestCase
+  include WumpusHunt
+  
   def setup
     @s = Square.new
     @r = MockSenses.new

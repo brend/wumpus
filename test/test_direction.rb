@@ -3,6 +3,7 @@ require 'wumpus/direction'
 require 'mocks'
 
 class TestDirection < Test::Unit::TestCase
+  include WumpusHunt
   
   def test_offset
     assert_equal([0, 1], [Direction::UP.x_offset, Direction::UP.y_offset])

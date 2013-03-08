@@ -2,6 +2,8 @@ require 'test/unit'
 require 'wumpus/senses'
 
 class TestSenses < Test::Unit::TestCase
+  include WumpusHunt
+  
   def test_default_values
     s = Senses.new
     

@@ -6,6 +6,8 @@ require 'wumpus/direction'
 require 'flexmock/test_unit'
 
 class TestCave < Test::Unit::TestCase
+  include WumpusHunt
+  
   def setup
     @h = Object.new
     @c = Cave.new(@h)
