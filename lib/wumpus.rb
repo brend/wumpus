@@ -2,6 +2,7 @@ require 'wumpus/cave'
 
 # Load the hunter from the provided file
 raise Exception.new("Command line argument needed: hunter file") if ARGV.count == 0
+raise Exception.new("Provided hunter file doesn't exist: #{ARGV.first}") unless File.exist?(ARGV.first)
 
 require ARGV.first
 
