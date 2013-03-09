@@ -84,6 +84,8 @@ module WumpusHunt
         # TODO: Replace this criterion with something sensible to prevent hunter from taking forever
         break if action_count > 500
       end
+      
+      score
     end
   
     def hunt_step

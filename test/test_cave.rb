@@ -87,6 +87,17 @@ class TestCave < Test::Unit::TestCase
     @c.hunt
   end
   
+  def test_hunt_score
+    h = flexmock()
+    h.should_receive(:make_move).at_least.once.and_return(Action::TURN)
+    
+    @c.hunter = h
+    @c.randomize
+    s = @c.hunt
+    
+    assert_equal(s, @c.score)
+  end
+  
   def test_square_access
     0.upto(3) do |y|
       0.upto(3) do |x|
