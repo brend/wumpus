@@ -369,7 +369,7 @@ class TestCave < Test::Unit::TestCase
   
   def test_hunt_handles_hunter_shenanigans
     @c.randomize
-    @c.hunter = flexmock.should_receive(:make_move => nil)
+    @c.hunter = flexmock().should_receive(:make_move => nil).mock
     assert_raise(WumpusHunt::ProtocolBreach) { @c.hunt_step }
   end
 end
