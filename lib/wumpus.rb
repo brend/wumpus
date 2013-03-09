@@ -27,13 +27,16 @@ end
 def hunt_the_hunt
   # Load the hunter from the provided file
   raise UsageError.new("Usage: wumpus.rb <hunter file> <number of games>") if ARGV.count != 2
-  raise UsageError.new("Provided hunter file doesn't exist: #{ARGV.first}") unless File.exist?(ARGV.first)
 
   n = ARGV[1].to_i
 
   raise UsageError.new("Please provide the number of games to be played") if n < 1
 
-  require ARGV.first
+  begin
+    require ARGV.first
+  rescue LoadError
+    raise UsageError.new("Provided hunter file not found on the load path: '#{ARGV.first}'")
+  end
 
   raise UsageError.new("Class 'Hunter' has not been defined") unless defined?(Hunter)
 
