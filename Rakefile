@@ -1,4 +1,5 @@
 require 'rake/testtask'
+require 'rspec/core/rake_task'
 
 task :default => [:test]
 
@@ -13,3 +14,6 @@ task :hunt, :hunter_file, :game_count do |t, args|
   game_count = args[:game_count]
   ruby "-Ilib lib/wumpus.rb #{hunter_file} #{game_count}"
 end
+
+
+RSpec::Core::RakeTask.new(:spec)
