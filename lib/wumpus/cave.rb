@@ -78,7 +78,7 @@ module WumpusHunt
     end
   
     def hunt
-      while not completed
+      until game_over?
         hunt_step
             
         # TODO: Replace this criterion with something sensible to prevent hunter from taking forever
@@ -94,6 +94,10 @@ module WumpusHunt
       raise ProtocolBreach.new("Hunter returns invalid action: #{action.nil? ? '<nil>' : action}") unless Action.valid?(action)
       
       action.apply(self)    
+    end
+    
+    def game_over?
+      completed || hunter_dead?
     end
   
     def reset_events

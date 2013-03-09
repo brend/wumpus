@@ -372,4 +372,14 @@ class TestCave < Test::Unit::TestCase
     @c.hunter = flexmock().should_receive(:make_move => nil).mock
     assert_raise(WumpusHunt::ProtocolBreach) { @c.hunt_step }
   end
+  
+  def test_hunt_ends_if_hunter_dead
+    @c.hunter_location = [0, 0]
+    @c.hunter_direction = Direction::LEFT
+    @c[0, 0].wumpus = true
+    @c.hunter = flexmock()
+    @c.hunter.should_receive(:make_move).never
+    
+    @c.hunt
+  end
 end
