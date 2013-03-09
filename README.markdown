@@ -37,7 +37,7 @@ The Perils (and the Good Stuff)
 -------------------------------
 
 There are pits in the cave which will kill the hunter, if she walks into them.
-There's the Wumpus, which may be shot to death with the hunter's single
+There's the Wumpus - also deadly-, which may be shot to death with the hunter's single
 arrow. Maybe it's best to avoid it altogether...
 There's some gold, which is the reason for the hunter's venture into this
 cave full of danger and funk.
