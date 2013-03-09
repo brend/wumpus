@@ -82,10 +82,7 @@ module WumpusHunt
         hunt_step
             
         # TODO: Replace this criterion with something sensible to prevent hunter from taking forever
-        if action_count > 500
-          puts "Hunter has taken to many actions; quitting..."
-          break
-        end
+        break if action_count > 500
       end
     end
   
