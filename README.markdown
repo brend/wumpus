@@ -97,8 +97,9 @@ The Nitty-Gritty
 ----------------
 
 For starters, the student will povide their implementation of the hunter in
-a file called `hunter.rb`. Therein must be found a class by the name of
-`Hunter`, which verily shalt possess a method calléd `Hunter#make_move(senses)`!
+a file to be passed as a command line argument to the script `wumpus.rb`. 
+Therein must be found a class by the name of `Hunter`, which must implement a
+method called `make_move(senses)`.
 The object passed as an argument into the parameter `senses` will have 
 accessors `breeze`, `stench`, `glitter`, `bump`, `scream`, indicating wether
 or not the respecitive sensory input is present.
@@ -107,5 +108,10 @@ desired action, one of `Action::TURN`, `Action::FORWARD`, `Action::SHOOT`,
 `Action::GRAB` and `Action::CLIMB`.
 
 The game will continue to call the method `Hunter#make_move` until the hunt is over
-(good or bad), or until ten turns have passed without the hunter moving from
-her current square *(this is preliminary, will probably be refined later)*.
+(good or bad), or until five hundred turns have passed *(this is preliminary, 
+will probably be refined later)*.
+
+Example usage of the main script from the `lib` directory, assuming the file
+`my_hunter.rb` is also in that same location:
+
+    ruby -I. wumpus.rb my_hunter.rb
