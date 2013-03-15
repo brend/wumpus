@@ -226,5 +226,44 @@ module WumpusHunt
     def gold_grabbed?
       not self.squares.any? {|s| s.gold}
     end
+    
+    def square_ascii(a, x, y)
+      senses = get_senses(x, y)
+      a[3] = senses.stench ? 's' : ' '
+      a[6] = senses.glitter ? 'g' : ' '
+      a[7] = senses.breeze ? 'b' : ' '
+      a[8] = senses.bump ? 'm' : ' '
+    end
+    
+    def ascii
+      r = Array.new(4 * 4)
+      # TODO: Arrow information
+      0.upto(3) do |x|
+        0.upto(3) do |y|
+          a = Array.new(9)
+          # apply sense information
+          square_ascii(a, x, y)
+          # apply square information
+          self[x, y].ascii(a)
+          # apply direction information
+          hunter_direction.ascii(a)
+          # merge into global matrix
+          merge_ascii(r, a, x, y)
+        end
+      end
+      r
+    end
+    
+    def print
+      m = ascii
+      12.times {|i| puts m[i * 12, 12].join }
+    end
+    
+    def merge_ascii(r, a, x, y)
+      a.each_with_index do |o, i|
+        k = (x * 3 + (i % 3)) + (y * 36 + (i / 3) * 12)
+        r[k] = o
+      end
+    end
   end
 end

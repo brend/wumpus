@@ -35,5 +35,21 @@ module WumpusHunt
     def to_s
       name
     end
+    
+    def ascii(a)
+      a[4] = 
+        case self
+        when UP
+          'U'
+        when RIGHT
+          'R'
+        when DOWN
+          'D'
+        when LEFT
+          'L'
+        else
+          '?'
+        end
+    end
   end
 end
