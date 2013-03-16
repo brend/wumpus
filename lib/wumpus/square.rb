@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module WumpusHunt
   class Square
     attr_accessor :gold, :wumpus, :pit, :start
@@ -28,10 +30,10 @@ module WumpusHunt
     end
     
     def ascii(a)
-      a[0] = (gold ? 'G' : ' ')
-      a[1] = (wumpus ? 'W' : ' ')
-      a[2] = (pit ? 'P' : ' ')
-      a[5] = (start ? 'S' : ' ')
+      a[0] = (gold ? '💰' : ' ')
+      a[1] = (wumpus ? '👾' : ' ')
+      a[2] = (pit ? '☉' : ' ')
+      a[5] = (start ? '⛳' : ' ')
       a
     end
   end

@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module WumpusHunt
   class Direction
     attr_accessor :name, :x_offset, :y_offset
@@ -40,13 +42,13 @@ module WumpusHunt
       a[4] = 
         case self
         when UP
-          'U'
+          '↑'
         when RIGHT
-          'R'
+          '→'
         when DOWN
-          'D'
+          '↓'
         when LEFT
-          'L'
+          '←'
         else
           '?'
         end

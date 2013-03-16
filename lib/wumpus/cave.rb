@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 require 'wumpus/direction'
 require 'wumpus/square'
 require 'wumpus/senses'
@@ -249,10 +251,10 @@ module WumpusHunt
     
     def square_ascii(a, x, y)
       senses = get_senses(x, y)
-      a[3] = senses.stench ? 's' : ' '
-      a[6] = senses.glitter ? 'g' : ' '
-      a[7] = senses.breeze ? 'b' : ' '
-      a[8] = senses.bump ? 'm' : ' '
+      a[3] = senses.stench ? '♒' : ' '
+      a[6] = senses.glitter ? '🔅' : ' '
+      a[7] = senses.breeze ? '♨' : ' '
+      a[8] = senses.bump ? '🌟' : ' '
     end
     
     def ascii
