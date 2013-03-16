@@ -7,7 +7,7 @@ module WumpusHunt
   class ProtocolBreach < Exception; end
 
   class Cave
-    attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus
+    attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus, :logging
     attr_reader :squares, :completed
   
     def initialize(h)
@@ -104,12 +104,16 @@ module WumpusHunt
     end
     
     def log_before_action(senses)
+      return if not logging
+      
       puts "*** Turn ##{action_count}"
       puts "Hunter senses: #{senses}"
       print_ascii
     end
     
     def log_after_action(action)
+      return if not logging
+      
       puts "Hunter picks action: #{action}"
       puts
     end
