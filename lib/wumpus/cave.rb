@@ -91,11 +91,27 @@ module WumpusHunt
     def hunt_step
       senses = get_senses(self.hunter_location.first, self.hunter_location.last)
       reset_events
+      
+      log_before_action(senses)
+      
       action = self.hunter.make_move(senses)
+      
+      log_after_action(action)
       
       raise ProtocolBreach.new("Hunter returns invalid action: #{action.nil? ? '<nil>' : action}") unless Action.valid?(action)
       
       action.apply(self)    
+    end
+    
+    def log_before_action(senses)
+      puts "*** Turn ##{action_count}"
+      puts "Hunter senses: #{senses}"
+      puts "<Board be here>"
+    end
+    
+    def log_after_action(action)
+      puts "Hunter picks action: #{action}"
+      puts
     end
     
     def game_over?
