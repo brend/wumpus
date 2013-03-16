@@ -106,7 +106,7 @@ module WumpusHunt
     def log_before_action(senses)
       puts "*** Turn ##{action_count}"
       puts "Hunter senses: #{senses}"
-      puts "<Board be here>"
+      print_ascii
     end
     
     def log_after_action(action)
@@ -262,7 +262,7 @@ module WumpusHunt
           # apply square information
           self[x, y].ascii(a)
           # apply direction information
-          hunter_direction.ascii(a)
+          hunter_location == [x, y] ? hunter_direction.ascii(a) : a[4] = ' '
           # merge into global matrix
           merge_ascii(r, a, x, y)
         end
@@ -270,9 +270,18 @@ module WumpusHunt
       r
     end
     
-    def print
+    def print_ascii
       m = ascii
-      12.times {|i| puts m[i * 12, 12].join }
+      12.times do |y|
+        print("-" * 17 + "\n") if y % 3 == 0
+        12.times do |x|
+          print('|') if x % 3 == 0
+          print m[x + 12 * y]
+        end
+        print '|'
+        puts
+      end
+      print("-" * 17 + "\n")
     end
     
     def merge_ascii(r, a, x, y)
