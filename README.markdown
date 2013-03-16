@@ -111,10 +111,10 @@ The game will continue to call the method `Hunter#make_move` until the hunt is o
 (good or bad), or until five hundred turns have passed *(this is preliminary, 
 will probably be refined later)*.
 
-Example usage of the main script from within the `lib` directory, using the provided interactive hunter implementation and playing one game:
+Example usage of the main script from within the `lib` directory, using the provided interactive hunter implementation and playing one game, logging off (0, "on" would be 1):
 
-    ruby -I. wumpus.rb interactive_hunter.rb 1
+    ruby -I. wumpus.rb interactive_hunter.rb 1 0
 
 Or, from the project directory, using rake:
 
-    rake hunt[interactive_hunter.rb,1]
+    rake hunt[interactive_hunter.rb,1,0]
