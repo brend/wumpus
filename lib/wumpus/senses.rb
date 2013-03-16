@@ -1,3 +1,5 @@
+# encoding: utf-8
+
 module WumpusHunt
   class Senses
     attr_accessor :breeze, :stench, :glitter, :bump, :scream
@@ -21,6 +23,13 @@ module WumpusHunt
       return '[nothing]' if all.empty?
       
       "[#{all.join(', ')}]"
+    end
+    
+    def ascii(a)
+      a[3] = stench ? '♒' : ' '
+      a[6] = glitter ? '🔅' : ' '
+      a[7] = breeze ? '♨' : ' '
+      a[8] = bump ? '🌟' : ' '
     end
   end
 end

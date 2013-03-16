@@ -251,10 +251,7 @@ module WumpusHunt
     
     def square_ascii(a, x, y)
       senses = get_senses(x, y)
-      a[3] = senses.stench ? '♒' : ' '
-      a[6] = senses.glitter ? '🔅' : ' '
-      a[7] = senses.breeze ? '♨' : ' '
-      a[8] = senses.bump ? '🌟' : ' '
+      senses.ascii(a)
     end
     
     def ascii
