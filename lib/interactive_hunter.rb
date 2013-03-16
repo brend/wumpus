@@ -8,21 +8,18 @@ class Hunter
   
   def make_move(senses)
     @move_count += 1
-    puts "move ##{@move_count}; I sense #{senses}; "
     action = decide(senses)
-    puts "I will #{action}"
-    
+    puts "### I-Hunter: I will #{action}"
     action
   end
   
-  def decide(senses)
-    puts "Pick an action: [t]urn, [f]orward, [s]hoot, [g]rab, [c]limb"
-    
+  def decide(senses)    
     while true
+      puts "### I-Hunter: Move ##{@move_count}; I sense #{senses}; "
+      print "### I-Hunter: Pick an action out of [t]urn, [f]orward, [s]hoot, [g]rab, [c]limb: "
+      
       choice = STDIN.gets.chomp.downcase
-      
-      puts "You have picked '#{choice}'"
-      
+            
       case choice
       when 't'
         return WumpusHunt::Action::TURN
@@ -35,7 +32,7 @@ class Hunter
       when 'c'
         return WumpusHunt::Action::CLIMB
       else
-        puts "Pick one of [tfsgc]"
+        puts "### I-Hunter: Pick one of [tfsgc]!"
       end
     end
   end
