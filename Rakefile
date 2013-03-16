@@ -9,10 +9,11 @@ Rake::TestTask.new do |t|
   t.verbose = true
 end
 
-task :hunt, :hunter_file, :game_count do |t, args|
+task :hunt, :hunter_file, :game_count, :logging do |t, args|
   hunter_file = args[:hunter_file]
   game_count = args[:game_count]
-  ruby "-Ilib lib/wumpus.rb #{hunter_file} #{game_count}"
+  logging = args[:logging].to_i != 0
+  ruby "-Ilib lib/wumpus.rb #{hunter_file} #{game_count} #{logging}"
 end
 
 

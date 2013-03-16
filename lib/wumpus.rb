@@ -13,11 +13,12 @@ class Array
   end
 end
 
-def tournament(game_count)
+def tournament(game_count, logging = false)
   scores = []
   game_count.times do |i|
     h = Hunter.new
     c = WumpusHunt::Cave.new(h)
+    c.logging = logging
     c.randomize
     scores << c.hunt
   end
@@ -26,7 +27,7 @@ end
 
 def hunt_the_hunt
   # Load the hunter from the provided file
-  raise UsageError.new("Usage: wumpus.rb <hunter file> <number of games>") if ARGV.count != 2
+  raise UsageError.new("Usage: wumpus.rb <hunter file> <number of games> [<logging>]") if ARGV.count < 2
 
   n = ARGV[1].to_i
 
@@ -43,8 +44,10 @@ def hunt_the_hunt
   h = Hunter.new
 
   raise UsageError.new("Class 'Hunter' doesn't respond to 'make_move'.") unless h.respond_to?(:make_move)
+  
+  logging = (ARGV.count > 2) ? (ARGV[2] == 'true') : false
 
-  scores = tournament(n)
+  scores = tournament(n, logging)
   
   # Print the results
   puts "*** Scores (#{n} games)"
