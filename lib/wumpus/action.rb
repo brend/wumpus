@@ -5,6 +5,10 @@ module WumpusHunt
     def Action.valid?(a)
       [TURN, FORWARD, SHOOT, GRAB, CLIMB].include?(a)
     end
+    
+    def Action.from_sym(s)
+      [TURN, FORWARD, SHOOT, GRAB, CLIMB].find {|a| a.message == s}
+    end
   
     def initialize(message)
       @message = message

@@ -96,9 +96,10 @@ module WumpusHunt
       
       log_before_action(senses)
       
-      action = self.hunter.make_move(senses)
+      action_description = self.hunter.make_move(senses).to_sym
+      action = Action.from_sym(action_description)
       
-      log_after_action(action)
+      log_after_action(action_description)
       
       raise ProtocolBreach.new("Hunter returns invalid action: #{action.nil? ? '<nil>' : action}") unless Action.valid?(action)
       
