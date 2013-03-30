@@ -45,7 +45,7 @@ def hunt_the_hunt
 
   raise UsageError.new("Class 'Hunter' doesn't respond to 'make_move'.") unless h.respond_to?(:make_move)
   
-  logging = (ARGV.count > 2) ? (ARGV[2] == 'true') : false
+  logging = (ARGV.count > 2) ? (not ['false', '0'].include?(ARGV[2])) : false
 
   scores = tournament(n, logging)
   
