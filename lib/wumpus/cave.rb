@@ -87,6 +87,8 @@ module WumpusHunt
         break if action_count > 500
       end
       
+      log_cause_of_game_over
+      
       score
     end
   
@@ -119,6 +121,16 @@ module WumpusHunt
       
       puts "Hunter picks action: #{action}"
       puts
+    end
+    
+    def log_cause_of_game_over
+      return unless logging
+      
+      puts 'The hunter has escaped the cave.' if completed
+      if hunter_dead?
+        puts 'The hunter has dropped into a pit.' if self[*hunter_location].pit
+        puts 'The hunter has fallen prey to the terrible Wumpus.' if self[*hunter_location].wumpus
+      end
     end
     
     def game_over?
