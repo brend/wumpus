@@ -131,12 +131,13 @@ module WumpusHunt
     end
   
     def randomize
-      sx, sy = rand(4), rand(4)
+      r = Random.new(174)
+      sx, sy = r.rand(4), r.rand(4)
       # Place 'start'
       self[sx, sy].start = true
       # Place 'gold
       while true
-        x, y = rand(4), rand(4)
+        x, y = r.rand(4), r.rand(4)
         unless self[x, y].occupied
           self[x, y].gold = true
           break
@@ -144,7 +145,7 @@ module WumpusHunt
       end
       # Place 'wumpus'
       while true
-        x, y = rand(4), rand(4)
+        x, y = r.rand(4), r.rand(4)
         unless self[x, y].occupied
           self[x, y].wumpus = true 
           break
@@ -152,7 +153,7 @@ module WumpusHunt
       end
       # Place 'pit'
       while true
-        x, y = rand(4), rand(4)
+        x, y = r.rand(4), r.rand(4)
         unless self[x, y].occupied
           self[x, y].pit = true 
           break
@@ -160,7 +161,7 @@ module WumpusHunt
       end
       # Place another 'pit'
       while true
-        x, y = rand(4), rand(4)
+        x, y = r.rand(4), r.rand(4)
         unless self[x, y].occupied
           self[x, y].pit = true 
           break
