@@ -280,7 +280,7 @@ module WumpusHunt
         print("-" * 17 + "\n") if y % 3 == 0
         12.times do |x|
           print('|') if x % 3 == 0
-          print m[x + 12 * y]
+          print m[x + 12 * (12 - (y + 1))]
         end
         print '|'
         puts
