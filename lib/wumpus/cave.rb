@@ -10,13 +10,14 @@ module WumpusHunt
 
   class Cave
     attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus, :logging
-    attr_reader :squares, :completed
+    attr_reader :squares, :completed, :random
   
     def initialize(h)
       @hunter = h
       @squares = Array.new(4 * 4) {Square.new}
       @action_count = 0
       @score = 0
+      @random = Random.new
     end
   
     def [](x, y)
@@ -143,13 +144,12 @@ module WumpusHunt
     end
   
     def randomize
-      r = Random.new(174)
-      sx, sy = r.rand(4), r.rand(4)
+      sx, sy = random.rand(4), random.rand(4)
       # Place 'start'
       self[sx, sy].start = true
       # Place 'gold
       while true
-        x, y = r.rand(4), r.rand(4)
+        x, y = random.rand(4), random.rand(4)
         unless self[x, y].occupied
           self[x, y].gold = true
           break
@@ -157,7 +157,7 @@ module WumpusHunt
       end
       # Place 'wumpus'
       while true
-        x, y = r.rand(4), r.rand(4)
+        x, y = random.rand(4), random.rand(4)
         unless self[x, y].occupied
           self[x, y].wumpus = true 
           break
@@ -165,7 +165,7 @@ module WumpusHunt
       end
       # Place 'pit'
       while true
-        x, y = r.rand(4), r.rand(4)
+        x, y = random.rand(4), random.rand(4)
         unless self[x, y].occupied
           self[x, y].pit = true 
           break
@@ -173,7 +173,7 @@ module WumpusHunt
       end
       # Place another 'pit'
       while true
-        x, y = r.rand(4), r.rand(4)
+        x, y = random.rand(4), random.rand(4)
         unless self[x, y].occupied
           self[x, y].pit = true 
           break
