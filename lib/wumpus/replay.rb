@@ -19,6 +19,17 @@ class Replay
     @world = world
     @action_map = action_map
   end
+  
+  class RHunter
+    def initialize(a, name = nil)
+      @actions = a.reverse
+      @name = name
+    end
+    
+    def make_move(senses)
+      @actions.pop
+    end
+  end
 end
 
 def clear_replays

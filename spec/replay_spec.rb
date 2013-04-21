@@ -26,3 +26,18 @@ describe Replay do
     Replay.replays.length.should eq 0
   end
 end
+
+describe Replay::RHunter do
+  it "has a name and a sequence of actions" do
+    h = Replay::RHunter.new('Testyboy', [:turn, :forward, :shoot])
+  end
+  
+  it "yields the supplied actions" do
+    a = [:turn, :turn, :forward, :shoot]
+    h = Replay::RHunter.new(a)
+    a.each do |x|
+      h.make_move(nil).should eq x
+    end
+  end
+end
+
