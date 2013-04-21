@@ -12,12 +12,21 @@ module WumpusHunt
     attr_accessor :hunter, :start_location, :hunter_arrow, :action_count, :just_bumped, :just_killed_wumpus, :logging
     attr_reader :squares, :completed, :random
   
-    def initialize(h)
+    def initialize(h, world = nil)
       @hunter = h
       @squares = Array.new(4 * 4) {Square.new}
       @action_count = 0
       @score = 0
       @random = Random.new
+      
+      setup(world) if world
+    end
+    
+    def setup(world)
+      self[*world[:start]].start = true
+      self[*world[:gold]].gold = true
+      self[*world[:wumpus]].wumpus = true
+      world[:pits].each {|pl| self[*pl].pit = true}
     end
   
     def [](x, y)

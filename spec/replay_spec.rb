@@ -10,7 +10,7 @@ describe Replay do
   end
   
   it "adds replays to the list" do
-    world = [[1,0], [2,3], [[0,1], [[2,2], [2,3]]]]
+    world = {:start => [1,0], :gold => [2,3], :wumpus => [0,1], :pits => [[2,2], [2,3]]}
     action_map = {'Bronco' => [:turn, :forward, :turn, :turn, :forward, :shoot]}
 
     clear_replays
@@ -38,6 +38,13 @@ describe Replay::RHunter do
     a.each do |x|
       h.make_move(nil).should eq x
     end
+  end
+  
+  it "raises an error if asked for too many actions" do
+    h = Replay::RHunter.new([:turn, :forward])
+    h.make_move(nil)
+    h.make_move(nil)
+    expect {h.make_move(nil)}.to raise_error
   end
 end
 
